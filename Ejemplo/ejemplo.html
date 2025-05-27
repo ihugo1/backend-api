@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo API: Login, Registro y Carrito</title>
+</head>
+<body>
+    <!-- 
+    =====================================
+    SECCIÓN 1: FORMULARIO DE LOGIN 
+    =====================================
+    -->
+    <h1>Login de Usuario</h1>
+    <form id="loginForm">
+        <div>
+            <label>Email:</label>
+            <input type="email" id="login-email" required>
+        </div>
+        <div>
+            <label>Contraseña:</label>
+            <input type="password" id="login-password" required>
+        </div>
+        <button type="button" onclick="login()">Iniciar Sesión</button>
+    </form>
+
+    <!-- 
+    =====================================
+    SECCIÓN 2: FORMULARIO DE REGISTRO 
+    =====================================
+    -->
+    <h1>Registro de Usuario</h1>
+    <form id="registerForm">
+        <div>
+            <label>Nombre completo:</label>
+            <input type="text" id="register-name" required>
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" id="register-email" required>
+        </div>
+        <div>
+            <label>Contraseña (mínimo 6 caracteres):</label>
+            <input type="password" id="register-password" required minlength="6">
+        </div>
+        <button type="button" onclick="register()">Registrarse</button>
+    </form>
+
+    <!-- 
+    =====================================
+    SECCIÓN 3: FORMULARIO DE CARRITO 
+    =====================================
+    (Requiere estar autenticado)
+    -->
+    <h1>Agregar al Carrito</h1>
+    <form id="cartForm">
+        <div>
+            <label>ID del Producto:</label>
+            <input type="number" id="product-id" required>
+        </div>
+        <div>
+            <label>Cantidad:</label>
+            <input type="number" id="product-quantity" value="1" min="1" required>
+        </div>
+        <button type="button" onclick="addToCart()">Agregar al Carrito</button>
+    </form>
+
+    <!-- 
+    =====================================
+    SECCIÓN 4: ÁREA DE RESULTADOS 
+    =====================================
+    -->
+    <div id="response"></div>
+
+    <script>
+        // Configuración base
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let authToken = ''; // Almacenará el JWT después del login/registro
+
+        // Función para mostrar respuestas al usuario
+        function showResponse(message, isSuccess) {
+            const responseDiv = document.getElementById('response');
+            responseDiv.textContent = message;
+            responseDiv.style.color = isSuccess ? 'green' : 'red';
+        }
+
+        /**
+         * =====================================
+         * FUNCIÓN DE LOGIN
+         * =====================================
+         * 1. Obtiene credenciales del formulario
+         * 2. Envía petición al endpoint /auth/login
+         * 3. Almacena el token JWT si es exitoso
+         */
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    authToken = data.token; // Guardamos el token
+                    showResponse(`✅ Login exitoso. Bienvenido ${data.user.name}`, true);
+                } else {
+                    showResponse(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                showResponse('❌ Error de conexión con el servidor', false);
+            }
+        }
+
+        /**
+         * =====================================
+         * FUNCIÓN DE REGISTRO
+         * =====================================
+         * 1. Obtiene datos del formulario
+         * 2. Envía petición al endpoint /auth/register
+         * 3. Almacena el token JWT si es exitoso
+         */
+        async function register() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    authToken = data.token; // Guardamos el token
+                    showResponse(`✅ Registro exitoso. Bienvenido ${data.user.name}`, true);
+                } else {
+                    showResponse(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                showResponse('❌ Error de conexión con el servidor', false);
+            }
+        }
+
+        /**
+         * =====================================
+         * FUNCIÓN PARA AGREGAR AL CARRITO
+         * =====================================
+         * 1. Verifica que exista un token JWT
+         * 2. Obtiene productId y quantity del formulario
+         * 3. Envía petición al endpoint /cart/add
+         * 4. Muestra resultado de la operación
+         */
+        async function addToCart() {
+            if (!authToken) {
+                showResponse('❌ Debes iniciar sesión primero', false);
+                return;
+            }
+
+            const productId = document.getElementById('product-id').value;
+            const quantity = document.getElementById('product-quantity').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/cart/add`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ productId, quantity })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResponse(`✅ Producto agregado al carrito: ${data.message}`, true);
+                } else {
+                    showResponse(`❌ Error: ${data.error}`, false);
+                }
+            } catch (error) {
+                showResponse('❌ Error de conexión con el servidor', false);
+            }
+        }
+    </script>
+</body>
+</html>
