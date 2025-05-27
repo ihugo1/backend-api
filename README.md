@@ -5,7 +5,7 @@ Para correr el servidor:
 4) Para que arranque usar el comando "node server.js".
 
 Para probar si sirve, una vez corriendo pueden ir al navegador o con postman y probar los endpoints y ver si devuelve el json, 
-Ejemplo: "http://localhost:5000/api/products/" . Si devuelve un "[]" está funcionando pero simplemente no tienen nada guardado en la base,
+Ejemplo: "http://localhost:5000/api/products/" . Si devuelve un "[ ]" está funcionando pero simplemente no tienen nada guardado en la base,
 pueden guardar algo desde su sql y probar de nuevo deberian aparecer los productos.
 
 De momento los endpoints de la API que sirven son las que están en la carpeta "routes". Por ejemplo si quieren agregar un producto al carrito hacen el post
