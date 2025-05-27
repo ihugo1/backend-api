@@ -10,5 +10,5 @@ pueden guardar algo desde su sql y probar de nuevo deberian aparecer los product
 
 De momento los endpoints de la API que sirven son las que están en la carpeta "routes". Por ejemplo si quieren agregar un producto al carrito (cart) hacen el post
 usando el endpoint "/api/cart/add". Revisen cada archivo para ver como son los endpoints, la mayoria piden el token del usuario logeado en ese momento por lo que 
-primero hay que logearse y guardar el token para luego usarlo en el header de la solicitud.
+primero hay que logearse y guardar el token para luego usarlo en el header de la solicitud. Hay un ejemplo de como funciona mas o menos en la carpeta "ejemplo".
 
