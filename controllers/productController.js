@@ -49,7 +49,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// Actualizar producto (solo admin)
+/*
 const updateProduct = async (req, res) => {
   try {
     const { name, description, price, image_url, category } = req.body;
@@ -68,7 +68,7 @@ const updateProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar producto' });
   }
-};
+};*/
 
 // Eliminar producto (solo admin)
 const deleteProduct = async (req, res) => {

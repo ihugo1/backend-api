@@ -7,9 +7,9 @@ const { auth } = require('../middlewares/auth');
 router.use(auth);
 
 // Crear orden desde el carrito
-router.post('/', orderController.createOrder);
+router.post('/create', orderController.createOrder);
 
-// Obtener historial de órdenes del usuario
+// Obtener historial de órdenes del usuario logeado
 router.get('/', orderController.getUserOrders);
 
 // Obtener detalles de una orden específica

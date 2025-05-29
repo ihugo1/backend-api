@@ -1,18 +1,87 @@
-POST:
-http://localhost:5000/api/auth/login (Logear)
-http://localhost:5000/api/auth/register (Registrar)
-http://localhost:5000/api/cart/add (Agregar un item al carrito)*
-http://localhost:5000/api/order (Crear una orden, esto vacia el carrito)*
 
-GET:
-http://localhost:5000/api/cart (Obtener el carrito)*
-http://localhost:5000/api/order (Obtener las ordenes)*
-http://localhost:5000/api/users (Obtener todos los usuario)*
-http://localhost:5000/api/users/profile (Obtener datos del usuario)*
+---------------------------------------------------------------------------
+ENDPOINTS DE AUTENTIFICACIÓN (No requieren token)
+---------------------------------------------------------------------------
 
-DELETE:
-http://localhost:5000/api/cart/remove/ + la id del producto (Borra todas las unidades de un mismo producto)*
+POST http://localhost:5000/api/auth/register 
+- Registra un nuevo usuario
+- Ejemplo del body que se espera:
+  {
+    "name": "nombre",
+    "email": "usuario@ejemplo.com",
+    "password": "12345"
+  }
 
-Todas las marcadas con * necesitan el token del usuario en el header de la 
-solicitud.
+POST http://localhost:5000/api/auth/login (no requiere token)
+- Logeo un usuario registrado previamente
+- Ejemplo del body que se espera:
+  {
+    "email": "usuario@ejemplo.com",
+    "password": "12345"
+  }
+
+---------------------------------------------------------------------------
+ENDPOINTS DEL CARRITO (Requieren token)
+---------------------------------------------------------------------------
+
+POST http://localhost:5000/api/cart/add 
+- Agrega un item al carrito del usuario actual
+- Ejemplo del body que se espera:
+  {
+    "productId": 1,
+    "quantity": 2
+  }
+
+GET http://localhost:5000/api/cart 
+- Obtiene el carrito del usuario actual 
+
+DELETE http://localhost:5000/api/cart/remove/ + ID_DEL_PRODUCTO (requiere token)
+- Elimina todas las unidades de un mismo item del carrito del usuario actual por
+  medio de su ID
+
+---------------------------------------------------------------------------
+ENDPOINTS DE LAS ORDENEDES (Requieren token)
+---------------------------------------------------------------------------
+
+POST http://localhost:5000/api/order/create 
+- Crea una orden con los items del carrito del usuario actual y luego lo vacia 
+- Este post no requiere de un body
+
+GET http://localhost:5000/api/order
+- Obtiene todas las ordenes del usuario actual
+
+---------------------------------------------------------------------------
+ENDPOINTS DE LOS PRODUCTOS (Requieren token, a excepción del GET)
+---------------------------------------------------------------------------
+
+POST http://localhost:5000/api/products/create (SOLO ADMINS)
+- Crea un nuevo producto
+- Ejemplo del body que se espera:
+  {
+    "name": "Nintendo switch",
+    "description": "Esta es la nintendo switch y está carisima",
+    "price": 9999.99,
+    "image_url": "www.nintendo.com",
+    "category": "Consolas"
+  }
+
+GET http://localhost:5000/api/products
+- Obtiene la lista con todos los productos de la base de datos
+- No requiere token pues todos los usuarios tienen que poder ver la lista
+
+DELETE http://localhost:5000/api/products/remove/ + ID_DEL_PRODUCTO (SOLO ADMINS)
+- Elimina un producto de la base de datos por medio de su ID
+
+---------------------------------------------------------------------------
+ENDPOINTS DE USUARIOS (Requieten token)
+---------------------------------------------------------------------------
+
+GET http://localhost:5000/api/users/profile
+- Obtiene los datos del usuario actual
+
+GET http://localhost:5000/api/users (SOLO ADMIN)
+- Obtiene la lista con todos los usuarios de la base de datos
+
+DELETE http://localhost:5000/api/users/remove/ + ID_DEL_USUARIO (SOLO ADMINS)
+- Elimina un usuario de la base de datos por medio de su ID
 

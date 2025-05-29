@@ -9,9 +9,8 @@ router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductById);
 
 // Rutas protegidas (solo admin)
-router.post('/', auth, isAdmin, validateProduct, productController.createProduct);
-router.put('/:id', auth, isAdmin, validateProduct, productController.updateProduct);
-router.delete('/:id', auth, isAdmin, productController.deleteProduct);
+router.post('/create', auth, isAdmin, validateProduct, productController.createProduct);
+router.delete('/remove/:id', auth, isAdmin, productController.deleteProduct);
 
 
 module.exports = router;
