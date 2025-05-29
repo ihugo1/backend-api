@@ -8,5 +8,7 @@ Para probar si sirve, una vez corriendo pueden ir al navegador o con postman y p
 Ejemplo: "http://localhost:5000/api/products/" . Si devuelve un "[ ]" está funcionando pero simplemente no tienen nada guardado en la base,
 pueden guardar algo desde su sql y probar de nuevo deberian aparecer los productos.
 
+Para crear un usuario Admin ejecutar node crearadmin.js, ahi están las credenciales.
+
 Para ver toda la info de los endpoints ir al archivo "endpoints dentro del documento", tambien hay una carpeta ejemplo con un par de estos.
 
