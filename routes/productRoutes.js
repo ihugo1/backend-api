@@ -13,4 +13,5 @@ router.post('/', auth, isAdmin, validateProduct, productController.createProduct
 router.put('/:id', auth, isAdmin, validateProduct, productController.updateProduct);
 router.delete('/:id', auth, isAdmin, productController.deleteProduct);
 
+
 module.exports = router;

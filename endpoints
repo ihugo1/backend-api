@@ -1,0 +1,18 @@
+POST:
+http://localhost:5000/api/auth/login (Logear)
+http://localhost:5000/api/auth/register (Registrar)
+http://localhost:5000/api/cart/add (Agregar un item al carrito)*
+http://localhost:5000/api/order (Crear una orden, esto vacia el carrito)*
+
+GET:
+http://localhost:5000/api/cart (Obtener el carrito)*
+http://localhost:5000/api/order (Obtener las ordenes)*
+http://localhost:5000/api/users (Obtener todos los usuario)*
+http://localhost:5000/api/users/profile (Obtener datos del usuario)*
+
+DELETE:
+http://localhost:5000/api/cart/remove/ + la id del producto (Borra todas las unidades de un mismo producto)*
+
+Todas las marcadas con * necesitan el token del usuario en el header de la 
+solicitud.
+

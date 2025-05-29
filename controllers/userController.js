@@ -58,6 +58,23 @@ const login = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    // Verificar que el usuario sea admin
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso no autorizado. Se requieren privilegios de administrador' });
+    }
+
+    // Obtener todos los usuarios (sin contraseñas)
+    const users = await User.getAll();
+    
+    res.json(users);
+  } catch (error) {
+    console.error('Error en getAllUsers:', error);
+    res.status(500).json({ error: 'Error al obtener usuarios' });
+  }
+};
+
 // Obtener perfil de usuario (requiere autenticación)
 const getProfile = async (req, res) => {
   try {
@@ -77,4 +94,16 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile };
+const deleteUser = async (req, res) => {
+  try{
+    const deleted = await User.delete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar usuario' });
+  }
+}
+
+module.exports = { register, login, getProfile, deleteUser, getAllUsers };
